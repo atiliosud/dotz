@@ -17,12 +17,11 @@ namespace Dotz.Controllers
   [Authorize]
   [ApiController]
   [ApiVersion("1.0")]
-  [Route("api/v{version:apiVersion}/categories")]
+  [Route("api/v{version:apiVersion}/[controller]")]
   [Produces("application/json")]
   public class CategoryController : Controller
   {
     [HttpGet]
-    [Route("")]
     public ActionResult<List<Category>> Get([FromServices] ICategoryRepository repository)
     {
       try
@@ -88,6 +87,7 @@ namespace Dotz.Controllers
     }
 
     [HttpDelete("{id:int}")]
+
     public ActionResult<Category> Delete(
       [FromServices] ICategoryRepository repository, int id)
     {

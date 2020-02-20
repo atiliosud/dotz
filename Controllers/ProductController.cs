@@ -17,12 +17,12 @@ namespace Dotz.Controllers
   [Authorize]
   [ApiController]
   [ApiVersion("1.0")]
-  [Route("api/v{version:apiVersion}/products")]
+  [Route("api/v{version:apiVersion}/[controller]")]
   [Produces("application/json")]
   public class ProductController : Controller
   {
     [HttpGet]
-    [Route("")]
+
     public ActionResult<List<Product>> Get([FromServices] IProductRepository repository)
     {
       try
@@ -36,6 +36,7 @@ namespace Dotz.Controllers
     }
 
     [HttpGet("{id:int}")]
+
     public IActionResult Get([FromServices] IProductRepository repository, int id)
     {
       try
@@ -55,6 +56,7 @@ namespace Dotz.Controllers
     }
 
     [HttpPost]
+
     public ActionResult<Product> Create(
         [FromServices] IProductRepository repository,
         [FromBody]Product model)
@@ -73,6 +75,7 @@ namespace Dotz.Controllers
     }
 
     [HttpPut]
+
     public ActionResult<Product> Update(
         [FromServices] IProductRepository repository,
         [FromBody]Product model)
@@ -91,6 +94,7 @@ namespace Dotz.Controllers
     }
 
     [HttpDelete("{id:int}")]
+
     public ActionResult<Product> Delete(
       [FromServices] IProductRepository repository, int id)
     {

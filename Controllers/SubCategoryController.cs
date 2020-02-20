@@ -19,15 +19,15 @@ namespace Dotz.Controllers
   [ApiVersion("1.0")]
   [Route("api/v{version:apiVersion}/[controller]")]
   [Produces("application/json")]
-  public class OrderController : Controller
+  public class SubCategoryController : Controller
   {
     [HttpGet]
 
-    public ActionResult<List<Order>> Get([FromServices] IOrderRepository repository)
+    public ActionResult<List<SubCategory>> Get([FromServices] ISubCategoryRepository repository)
     {
       try
       {
-        return Ok(repository.Get().ToList());
+        return Ok(repository.Get().AsNoTracking().ToList());
       }
       catch (Exception ex)
       {
@@ -37,17 +37,14 @@ namespace Dotz.Controllers
 
     [HttpGet("{id:int}")]
 
-    public IActionResult Get([FromServices] IOrderRepository repository, int id)
+    public IActionResult Get([FromServices] ISubCategoryRepository repository, int id)
     {
       try
       {
-        Order Order = repository.Get()
-            .Include(x => x.Address)
-            .Include(x => x.User).AsNoTracking().FirstOrDefault(x => x.Id == id);
-
-        if (Order == null)
-          return NotFound(new { message = "Pedido inválido" });
-        return Ok(Order);
+        SubCategory SubCategory = repository.Get().AsNoTracking().FirstOrDefault(x => x.Id == id);
+        if (SubCategory == null)
+          return NotFound(new { message = "Categoria inválida" });
+        return Ok(SubCategory);
       }
       catch (Exception ex)
       {
@@ -57,9 +54,9 @@ namespace Dotz.Controllers
 
     [HttpPost]
 
-    public ActionResult<Order> Create(
-        [FromServices] IOrderRepository repository,
-        [FromBody]Order model)
+    public ActionResult<SubCategory> Create(
+        [FromServices] ISubCategoryRepository repository,
+        [FromBody]SubCategory model)
     {
       try
       {
@@ -76,9 +73,9 @@ namespace Dotz.Controllers
 
     [HttpPut]
 
-    public ActionResult<Order> Update(
-        [FromServices] IOrderRepository repository,
-        [FromBody]Order model)
+    public ActionResult<SubCategory> Update(
+        [FromServices] ISubCategoryRepository repository,
+        [FromBody]SubCategory model)
     {
       try
       {
@@ -95,18 +92,18 @@ namespace Dotz.Controllers
 
     [HttpDelete("{id:int}")]
 
-    public ActionResult<Order> Delete(
-      [FromServices] IOrderRepository repository, int id)
+    public ActionResult<SubCategory> Delete(
+      [FromServices] ISubCategoryRepository repository, int id)
     {
       try
       {
-        Order Order = repository.Get().AsNoTracking().FirstOrDefault(x => x.Id == id);
-        if (Order == null)
+        SubCategory SubCategory = repository.Get().AsNoTracking().FirstOrDefault(x => x.Id == id);
+        if (SubCategory == null)
         {
-          return NotFound(new { message = "Pedido inválido" });
+          return NotFound(new { message = "Categoria inválida" });
         }
-        repository.Delete(Order);
-        return Ok(new { message = "Pedido excluido" });
+        repository.Delete(SubCategory);
+        return Ok(new { message = "Categoria excluida" });
       }
       catch (Exception ex)
       {

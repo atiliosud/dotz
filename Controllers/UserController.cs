@@ -14,15 +14,13 @@ using Microsoft.AspNetCore.Http;
 
 namespace Dotz.Controllers
 {
-  [Authorize]
   [ApiController]
   [ApiVersion("1.0")]
-  [Route("api/v{version:apiVersion}/users")]
+  [Route("api/v{version:apiVersion}/[controller]")]
   [Produces("application/json")]
   public class UserController : Controller
   {
     [HttpGet]
-    [Route("")]
     public ActionResult<List<User>> Get([FromServices] IUserRepository repository)
     {
       try
@@ -59,8 +57,10 @@ namespace Dotz.Controllers
       try
       {
         if (ModelState.IsValid)
-          return Ok(repository.Add(model));
-
+        {
+          repository.Add(model);
+          return Ok(new { message = "Usuário adicionado" });
+        }
         return BadRequest(ModelState);
       }
       catch (Exception ex)

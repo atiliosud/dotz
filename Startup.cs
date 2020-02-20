@@ -41,6 +41,7 @@ namespace Dotz
       services.AddDbContext<DataContext>(opt => opt.UseInMemoryDatabase("Database"));
       services.AddScoped<DataContext, DataContext>();
 
+      services.AddTransient<ISubCategoryRepository, SubCategoryRepository>();
       services.AddTransient<ICategoryRepository, CategoryRepository>();
       services.AddTransient<IAddressRepository, AddressRepository>();
       services.AddTransient<IUserRepository, UserRepository>();

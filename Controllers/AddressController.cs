@@ -17,12 +17,12 @@ namespace Dotz.Controllers
   [Authorize]
   [ApiController]
   [ApiVersion("1.0")]
-  [Route("api/v{version:apiVersion}/addresses")]
+  [Route("api/v{version:apiVersion}/[controller]")]
   [Produces("application/json")]
   public class AddressController : Controller
   {
     [HttpGet]
-    [Route("")]
+
     public ActionResult<List<Address>> Get([FromServices] IAddressRepository repository)
     {
       try

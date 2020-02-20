@@ -13,9 +13,9 @@ namespace Dotz.Controllers
 {
   [ApiController]
   [ApiVersion("1.0")]
-  [Route("api/v{version:apiVersion}/auth")]
+  [Route("api/v{version:apiVersion}/[controller]")]
   [Produces("application/json")]
-  public abstract class AuthController : Controller
+  public class AuthController : Controller
   {
     [HttpPost]
     [Route("login")]
