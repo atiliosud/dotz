@@ -35,19 +35,27 @@ namespace Dotz.Controllers
       }
     }
 
-    [HttpGet("{id:int}")]
-
-    public IActionResult Get([FromServices] IOrderRepository repository, int id)
+    /*Listagem de pedidos (com status de entrega) */
+    public IActionResult Get([FromServices] IOrderRepository repository, [FromQuery]int? id, [FromQuery] bool? delivered)
     {
       try
       {
-        Order Order = repository.Get()
+        IQueryable<Order> queryOrder = repository.Get()
             .Include(x => x.Address)
-            .Include(x => x.User).AsNoTracking().FirstOrDefault(x => x.Id == id);
+            .Include(x => x.User).AsNoTracking();
 
-        if (Order == null)
+        if (id.HasValue)
+          queryOrder = queryOrder.Where(x => x.Id == id);
+
+        if (delivered.Value)
+          queryOrder = queryOrder.Where(x => x.Status == Status.Deliver);
+
+        Order order = queryOrder.FirstOrDefault();
+
+        if (order == null)
           return NotFound(new { message = "Pedido inválido" });
-        return Ok(Order);
+
+        return Ok(order);
       }
       catch (Exception ex)
       {
@@ -58,15 +66,21 @@ namespace Dotz.Controllers
     [HttpPost]
 
     public ActionResult<Order> Create(
-        [FromServices] IOrderRepository repository,
+        [FromServices] IOrderRepository orderRepository,
+        [FromServices] IUserPointsControlRepository userPointsRepository,
         [FromBody]Order model)
     {
       try
       {
         if (ModelState.IsValid)
-          return Ok(repository.Add(model));
-
-        return BadRequest(ModelState);
+        {
+          var userPoints = UserPointsControlService.GenerateUserPoints(userPointsRepository, model);
+          userPointsRepository.AddBulk(userPoints);
+          orderRepository.Add(model);
+          return Ok(new { message = "Pedido criado" });
+        }
+        else
+          return BadRequest(ModelState);
       }
       catch (Exception ex)
       {

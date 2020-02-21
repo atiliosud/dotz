@@ -15,6 +15,7 @@ namespace Dotz.Core.Domain.Models
     public Address Address { get; set; }
     public Status Status { get; set; }
     public decimal Total { get; set; }
+    public UserPointsControl UserPointsControl { get; set; }
   }
 
   public enum Status

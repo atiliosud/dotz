@@ -10,8 +10,9 @@ namespace Dotz.Core.Domain.Models
     public int Id { get; set; }
     public int UserId { get; set; }
     public User User { get; set; }
-    public int AccumulatedPoints { get; set; }
-    public List<Product> ProductsToDischarge { get; set; }
-    public List<Order> Orders { get; set; }
+    public int GeneratedPoints { get; set; }
+    public int ProductId { get; set; }
+    public Product Product { get; set; }
+    public bool CanDischarge { get; set; }
   }
 }

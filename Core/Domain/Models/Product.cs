@@ -23,6 +23,8 @@ namespace Dotz.Core.Domain.Models
     [Range(1, int.MaxValue, ErrorMessage = "Categoria inválida")]
     public int CategoryId { get; set; }
     public Category Category { get; set; }
+    public int PointsToAdd { get; set; }
     public int PointsToDischarge { get; set; }
+    public bool AvaiableToDischarge { get; set; }
   }
 }
