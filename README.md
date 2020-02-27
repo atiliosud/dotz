@@ -14,6 +14,7 @@ Detalhamento de Implementações
 6)	OOP
 7)	Swagger
 8)	GIT (com gitignore)
+9) MySql não pude usar devido problemas na maquina
 
 Boas práticas:
 1)	Tratamento de exceções
