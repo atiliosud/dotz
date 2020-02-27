@@ -95,14 +95,14 @@ namespace Dotz
         app.UseDeveloperExceptionPage();
       }
 
+      app.UseHttpsRedirection();
+
       app.UseSwagger();
 
       app.UseSwaggerUI(c =>
       {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "My DOTZ API V1");
       });
-
-      app.UseHttpsRedirection();
 
       app.UseRouting();
 
@@ -118,6 +118,8 @@ namespace Dotz
       {
         endpoints.MapControllers();
       });
+
+      
     }
   }
 }

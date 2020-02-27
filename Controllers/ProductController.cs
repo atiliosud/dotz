@@ -35,19 +35,27 @@ namespace Dotz.Controllers
       }
     }
 
-    [HttpGet("{id:int}")]
 
-    public IActionResult Get([FromServices] IProductRepository repository, int id)
+    public IActionResult Get([FromServices] IProductRepository repository, [FromQuery] int? id, [FromQuery] bool? avaiableToDischarge)
     {
       try
       {
-        Product product = repository.Get()
+        IQueryable<Product> queryProducts = repository.Get()
             .Include(x => x.Category)
-            .AsNoTracking().FirstOrDefault(x => x.Id == id);
+            .AsNoTracking();
 
-        if (product == null)
-          return NotFound(new { message = "Produto inválido" });
-        return Ok(product);
+        if (id.HasValue)
+          queryProducts = queryProducts.Where(x => x.Id == id);
+
+        if (avaiableToDischarge.HasValue)
+          queryProducts = queryProducts.Where(x => x.AvaiableToDischarge == avaiableToDischarge.Value);
+
+       List<Product> listProducts = queryProducts.ToList();
+
+        if (listProducts == null)
+          return NotFound(new { message = "Não existem produtos disponiveis para resgate" });
+
+        return Ok(listProducts);
       }
       catch (Exception ex)
       {
@@ -63,8 +71,10 @@ namespace Dotz.Controllers
     {
       try
       {
-        if (ModelState.IsValid)
-          return Ok(repository.Add(model));
+        if (ModelState.IsValid){
+          repository.Add(model);
+          return Ok(new { message = "Produto adicionado com sucesso" });
+        }
 
         return BadRequest(ModelState);
       }

@@ -58,9 +58,11 @@ namespace Dotz.Controllers
     {
       try
       {
-        if (ModelState.IsValid)
-          return Ok(repository.Add(model));
-
+        if (ModelState.IsValid){
+          repository.Add(model);
+          return Ok(new { message = "Endereço de entrega adicionado" });
+        }
+      
         return BadRequest(ModelState);
       }
       catch (Exception ex)
@@ -76,8 +78,10 @@ namespace Dotz.Controllers
     {
       try
       {
-        if (ModelState.IsValid)
-          return Ok(repository.Update(model));
+        if (ModelState.IsValid){
+          repository.Update(model);
+          return Ok(new { message = "Endereço de entrega atualizado" });
+        }
 
         return BadRequest(ModelState);
       }
