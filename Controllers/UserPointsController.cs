@@ -37,7 +37,7 @@ namespace Dotz.Controllers
     [HttpGet]
     [Route("GetByParameters")]
     public IActionResult Get([FromServices] IUserPointsControlRepository repository,
-              [FromQuery] int? id, [FromQuery] int? productId, [FromQuery] int? userId)
+              [FromQuery] int? id, [FromQuery] int? productId, [FromQuery] int? userId, [FromQuery] bool? pointsBalance)
     {
       try
       {
@@ -56,7 +56,13 @@ namespace Dotz.Controllers
 
         List<UserPointsControl> listUserPoints = queryUserPoints.ToList();
 
-        if (listUserPoints == null)
+        int pointsBalanceTotal = 0;
+        if (pointsBalance.HasValue){
+            pointsBalanceTotal = listUserPoints.Sum(x => x.GeneratedPoints);
+            return Ok(pointsBalanceTotal);
+        }
+
+        if (listUserPoints == null || listUserPoints.Count == 0)
           return NotFound(new { message = "O usuário não tem pontos utilizados para o produto" });
 
         return Ok(listUserPoints);
