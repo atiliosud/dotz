@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -38,7 +39,13 @@ namespace Dotz
     {
       services.AddCors();
 
-      services.AddDbContext<DataContext>(opt => opt.UseInMemoryDatabase("Database"));
+      services.AddDbContext<DataContext>(options =>
+                {
+                options.UseInMemoryDatabase("DatabaseDotz");
+                options.ConfigureWarnings(x => x.Ignore(InMemoryEventId.TransactionIgnoredWarning));
+                });
+
+
       services.AddScoped<DataContext, DataContext>();
 
       services.AddTransient<ISubCategoryRepository, SubCategoryRepository>();

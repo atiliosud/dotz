@@ -35,13 +35,13 @@ namespace Dotz.Controllers
       }
     }
 
-
+    [HttpGet]
+    [Route("GetByParameters")]
     public IActionResult Get([FromServices] IProductRepository repository, [FromQuery] int? id, [FromQuery] bool? avaiableToDischarge)
     {
       try
       {
         IQueryable<Product> queryProducts = repository.Get()
-            .Include(x => x.Category)
             .AsNoTracking();
 
         if (id.HasValue)
@@ -52,7 +52,7 @@ namespace Dotz.Controllers
 
        List<Product> listProducts = queryProducts.ToList();
 
-        if (listProducts == null)
+        if (listProducts == null || listProducts.Count ==0)
           return NotFound(new { message = "Não existem produtos disponiveis para resgate" });
 
         return Ok(listProducts);

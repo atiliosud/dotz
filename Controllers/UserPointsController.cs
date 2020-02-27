@@ -34,6 +34,8 @@ namespace Dotz.Controllers
       }
     }
 
+    [HttpGet]
+    [Route("GetByParameters")]
     public IActionResult Get([FromServices] IUserPointsControlRepository repository,
               [FromQuery] int? id, [FromQuery] int? productId, [FromQuery] int? userId)
     {

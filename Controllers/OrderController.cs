@@ -35,6 +35,8 @@ namespace Dotz.Controllers
       }
     }
 
+    [HttpGet]
+    [Route("GetByParameters")]
     /*Listagem de pedidos (com status de entrega) */
     public IActionResult Get([FromServices] IOrderRepository repository, [FromQuery]int? id, [FromQuery] bool? delivered)
     {
@@ -68,14 +70,16 @@ namespace Dotz.Controllers
     public ActionResult<Order> Create(
         [FromServices] IOrderRepository orderRepository,
         [FromServices] IUserPointsControlRepository userPointsRepository,
+        [FromServices] IProductRepository productRepository,
         [FromBody]Order model)
     {
       try
       {
         if (ModelState.IsValid)
         {
-          var userPoints = UserPointsControlService.GenerateUserPoints(userPointsRepository, model);
-          userPointsRepository.AddBulk(userPoints);
+          var userPoints = UserPointsControlService.GenerateUserPoints(userPointsRepository,productRepository, model);
+          if (userPoints.Count > 0)
+            userPointsRepository.AddBulk(userPoints);
           orderRepository.Add(model);
           return Ok(new { message = "Pedido criado" });
         }
