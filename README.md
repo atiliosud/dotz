@@ -1,9 +1,4 @@
-# dotz
-Dotz Test WEBAPI
-
 Analista Programador: Atilio Camargo Moreira
-
-WEBAPI: TEST DOTZ
 
 Detalhamento de Implementações
 1)	Foi utilizado no teste VSCODE, .NET Core 3, EntityFramework (InMemory)
